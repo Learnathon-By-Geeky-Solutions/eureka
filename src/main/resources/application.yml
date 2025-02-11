@@ -1,0 +1,22 @@
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: SelfCourier
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: shakib19
+    username: root
+    url: jdbc:mysql://localhost:3306/selfCourier
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
