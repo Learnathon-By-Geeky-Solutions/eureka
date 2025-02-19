@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-// bug on nav bar dropdown not close when cursor going outside the div:
+
 
 
 
@@ -49,7 +49,7 @@ const Navbar = () => {
                 <div> <img src="/images/arrow-down-s-line.png" alt="" /></div>
                 {
                     openDropDown === "services" && 
-                    <div className='absolute top-12 p-1 grid grid-cols-2 w-96 item-center hover:cursor-pointer'
+                    <div className='absolute top-12 bg-white shadow-md p-1 grid grid-cols-2 w-96 item-center hover:cursor-pointer'
                     onMouseEnter={() => handleMouseHover("services")}
                     onMouseLeave={handleMouseHoverRemove}
                     >
@@ -63,7 +63,7 @@ const Navbar = () => {
                             </div>
                            
                         </div>
-                        <div className='flex p-3 border-2 border-white hover:border-gray-200 hover:scale-95 item-center space-x-2 max-w-fit'>
+                        <div className='flex p-3 border-2 border-white hover:border-gray-200 hover:scale-95 item-center space-x-2  max-w-fit'>
                             <div>
                                 <img className='w-8 border-1' src="/images/same day 2.png" alt="" />
                             </div>

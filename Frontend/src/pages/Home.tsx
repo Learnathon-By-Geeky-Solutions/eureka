@@ -3,15 +3,15 @@ import Navbar from '../components/Navbar'
 
 const Home = () => {
   return (
-    <div className=''>
-      <div>
+    <main >
+      <header>
         <Navbar/>
-      </div>
-      <div>
+      </header>
+      <section>
         Home 
-      </div>
+      </section>
       
-    </div>
+    </main>
   )
 }
 
