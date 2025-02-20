@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router'
 
 
 
@@ -176,8 +177,19 @@ const Navbar = () => {
 
         {/* sign in / register btn */}
         <div className=' ml-auto space-x-4 flex items-center'>
-            <a className='px-6 py-2 bg-blue-500 text-white rounded-md shadow-xs' href="">Log in</a>
-            <a className='px-6 py-2 bg-red-500 text-white rounded-md shadow-xs' href="">Register</a>
+        <Link
+        to="/login"
+        className='px-6 py-2 bg-blue-500 text-white rounded-md shadow-xs'
+        >Log in</Link>
+        <Link
+            to="/register"
+            className='px-6 py-2 bg-red-500 text-white rounded-md shadow-xs'
+        >
+        Register
+        </Link>
+
+
+           
         </div>
     </nav>
   )

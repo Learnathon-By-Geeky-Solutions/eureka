@@ -24,3 +24,35 @@ Here is a screenshot of the implemented navbar:
 
 ### Bugs
 The `@apply` directive in Tailwind CSS is still not functioning properly.
+
+
+## Log In page
+
+### Overview
+This is a login form. It uses **react-hook-form** for form handling, validation, and submission.
+
+### Features
+✅ Email & Password Input Fields  
+✅ Terms and Conditions Checkbox  
+✅ Real-time Validation with Error Messages  
+✅ Background Image on Right Side  
+✅ Logo & Brand Name on Top  
+
+### 📌 Usage
+This login form requires users to enter their email, password, and agree to the terms & conditions before submitting.
+
+### 📌 Input Fields & Validation
+
+```ts
+type InputFormSignIn = {
+  email: string;
+  password: string;
+  termAndCondition: boolean;
+};
+
+```
+
+### 📌 Log In Preview 
+ 
+
+Here is a screenshot of the implemented Log In: ![alt text](image-1.png)
