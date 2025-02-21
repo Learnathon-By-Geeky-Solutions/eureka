@@ -54,5 +54,5 @@ type InputFormSignIn = {
 
 ### 📌 Log In Preview 
  
-Here is a screenshot of the implemented Log In: 
-![alt text](image-1.png)
+
+Here is a screenshot of the implemented Log In: ![alt text](image-1.png)

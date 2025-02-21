@@ -2,7 +2,7 @@ import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 type InputFormSignIn = {
-  gmail: string,
+  email: string,
   password: string,
   termAndCondition: boolean
 }
@@ -21,7 +21,7 @@ const LogIn = () => {
   }
 
   // watch for change in form debug
-  console.log(watch("gmail"))
+  // console.log(watch("gmail"))
 
   return (
     <div className='bg-green-400 w-full h-screen px-60 py-30'>
@@ -57,12 +57,12 @@ const LogIn = () => {
                 <input
                   type="email"
                   id="email"
-                  {...register("gmail", { required: "Please enter Email address" })}
+                  {...register("email", { required: "Please enter Email address" })}
                   required
                   className="w-full px-4 py-2 border border-white rounded-md  bg-slate-100 text-gray-700  focus:outline-none hover:cursor-pointer"
                   placeholder="Email Address"
                 />
-                {errors.gmail && <p className="text-red-500 text-sm">{errors.gmail.message}</p>}
+                {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
               </div>
 
 
@@ -73,7 +73,14 @@ const LogIn = () => {
                 <input
                   type="password"
                   id="password"
-                  {...register("password", { required: "Please enter password" })}
+                  {...register("password", {
+                    required: "Please enter password",
+                    minLength: { value: 8, message: "Password must be at least 8 characters" },
+                    pattern: {
+                      value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                      message: "Password must contain at least one letter, one number, and one special character"
+                    }
+                  })}
                   required
                   className="w-full px-4 py-2 border border-white rounded-md  bg-slate-100 text-gray-700  focus:outline-none hover:cursor-pointer"
                   placeholder="Password"
@@ -112,9 +119,9 @@ const LogIn = () => {
           className='relative bg-cover bg-center flex justify-center items-center'
           style={{ backgroundImage: "url('/images/sign in page right image.png')" }}
         >
-          <div className="absolute inset-0 bg-black opacity-20"></div>
+          <div className="absolute inset-0 bg-black opacity-20"/>
 
-          
+
           {/* <img className='w-full' src="/images/sign in page right image.png" alt="" /> */}
         </div>
       </div>
