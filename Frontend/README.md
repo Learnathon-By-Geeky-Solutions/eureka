@@ -45,7 +45,7 @@ This login form requires users to enter their email, password, and agree to the 
 
 ```ts
 type InputFormSignIn = {
-  gmail: string;
+  email: string;
   password: string;
   termAndCondition: boolean;
 };
