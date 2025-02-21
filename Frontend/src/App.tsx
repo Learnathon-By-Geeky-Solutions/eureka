@@ -4,6 +4,8 @@
 import { Route, Routes } from 'react-router'
 import './App.css'
 import Home from './pages/Home'
+import LogIn from './pages/LogIn'
+import Register from './pages/Register'
 // import { Link } from 'react-router'
 
 
@@ -14,7 +16,8 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<Home/>}/>
-
+        <Route path='/login' element={<LogIn/>}/>
+        <Route path='/register' element={<Register/>}/>
         
       </Routes>
      
