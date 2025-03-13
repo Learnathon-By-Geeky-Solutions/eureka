@@ -1,2 +1,21 @@
 @import "tailwindcss";
 
+.dropdown{
+    position: relative;
+    display: inline-block;
+}
+.dropdownContent{
+    display: none;
+    position: absolute;
+    top: 2rem;
+    min-width: 165px;
+    background-color: white;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdownContent{
+    display: block;
+}
+.dropdownContentA{
+    display: block;
+}

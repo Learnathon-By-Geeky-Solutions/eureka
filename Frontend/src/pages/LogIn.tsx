@@ -1,5 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+
+import axios from 'axios'
+import { UserDataContext } from '@/contexts/UserContext'
+import { useNavigate } from 'react-router'
 
 type InputFormSignIn = {
   email: string,
@@ -10,14 +14,65 @@ type InputFormSignIn = {
 
 const LogIn = () => {
   // useForm for form;
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<InputFormSignIn>()
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<InputFormSignIn>();
+
+  const userContext = useContext(UserDataContext);
+  const navigate = useNavigate();
 
   // handle on submit;
-  const onSubmitHandle: SubmitHandler<InputFormSignIn> = (data) => {
+  const onSubmitHandle: SubmitHandler<InputFormSignIn> = async (information) => {
     // api todo
+    try {
+      
 
+      const requestData = {
+        email: information.email,
+        password: information.password,
+      }
+
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/auth/login",
+        requestData,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      )
+
+      const responseData = response.data;
+      console.log("Log in Response", response)
+      console.log("Log in Response data", responseData)
+      console.log("Log in Response status ", response.status)
+      if (response.status === 200) {
+        const {token, email, name, role, user_id, phone, address} = response.data;
+        const userData = {token, email, name, role, user_id, phone, address};
+
+        localStorage.setItem("auth-token", token);
+        localStorage.setItem("user", JSON.stringify(userData));
+
+        userContext?.setUser(userData);
+        console.log("From log in",userContext?.user);
+        // reset();
+       
+        navigate("/user/homepage");
+      }
+      else {
+        alert(`Error: ${responseData.message}`)
+      }
+
+
+
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        alert(error.response?.data?.message || "Registration failed!")
+      }
+      else {
+        console.log(`error: ${error}`)
+      }
+    }
     // check on console form data
-    console.log(data)
+    console.log(information)
   }
 
   // watch for change in form debug
@@ -48,6 +103,7 @@ const LogIn = () => {
 
           {/* sign in form */}
           <div className='px-8 relative p-2'>
+            {/* Form for Backend work */}
             <form
               onSubmit={handleSubmit(onSubmitHandle)}
               className='grid grid-cols-1 gap-3'
@@ -119,7 +175,7 @@ const LogIn = () => {
           className='relative bg-cover bg-center flex justify-center items-center'
           style={{ backgroundImage: "url('/images/sign in page right image.png')" }}
         >
-          <div className="absolute inset-0 bg-black opacity-20"/>
+          <div className="absolute inset-0 bg-black opacity-20" />
 
 
           {/* <img className='w-full' src="/images/sign in page right image.png" alt="" /> */}

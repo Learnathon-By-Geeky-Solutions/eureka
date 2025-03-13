@@ -1,23 +1,29 @@
 package com.example.selfcourier.controller;
 
 
+import com.example.selfcourier.config.JwtService;
 import com.example.selfcourier.error.DefaultException;
-import com.example.selfcourier.model.LoginRequest;
-import com.example.selfcourier.model.LoginResponse;
-import com.example.selfcourier.model.RegisterRequest;
-import com.example.selfcourier.model.RegisterResponse;
+import com.example.selfcourier.model.*;
 import com.example.selfcourier.service.AuthService;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.attribute.UserPrincipal;
+
 
 @RequestMapping("/api/v1")
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173",  allowCredentials = "true") // Allow frontend
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
+    private  final JwtService jwtService;
 
     @GetMapping("/welcome")
     public String welcome() {
@@ -32,5 +38,25 @@ public class AuthController {
     @PostMapping("/auth/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) throws DefaultException {
         return ResponseEntity.status(200).body(authService.login(loginRequest));
+    }
+
+    @GetMapping("/auth/profile")
+    public ResponseEntity<UserProfileResponse> getUserProfile(HttpServletRequest request) throws DefaultException{
+        String authHeader = request.getHeader("Authorization");
+
+        if(authHeader == null || authHeader.startsWith("Bearer ")){
+           return ResponseEntity.status(401).build();
+        }
+        String token = authHeader.substring(7); // remove Bearer
+        String email = jwtService.extractUserName(token);
+        if(email == null){
+            return ResponseEntity.status(401).build();
+        }
+//        String email = userDetails.getUsername();
+//        if(userDetails.getUsername() == null){
+//            throw new DefaultException("User not found with this email", 401);
+//        }
+
+        return ResponseEntity.status(201).body(authService.getUserProfile(email));
     }
 }

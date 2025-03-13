@@ -6,11 +6,10 @@ spring:
   application:
     name: SelfCourier
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    password: shakib19
-    username: root
-    url: jdbc:mysql://localhost:3306/selfCourier
-
+    drive-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,5 +17,5 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQLDialect
+      database: postgresql
+      database-platform: org.hibernate.dialect.PostgresSQLDialect

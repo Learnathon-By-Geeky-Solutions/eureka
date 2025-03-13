@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import axios from 'axios'
+import  { useContext, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 
-type InputFormRegister = {
+import { useNavigate } from 'react-router'
+import { UserDataContext } from '@/contexts/UserContext'
+
+interface InputFormRegister {
   name: string,
   email: string,
   password: string,
@@ -14,17 +18,75 @@ type InputFormRegister = {
 
 
 const Register = () => {
-
-  const { register, handleSubmit, formState: { errors }, watch } = useForm<InputFormRegister>()
+  const navigate = useNavigate();
+  const { register, handleSubmit, formState: { errors } } = useForm<InputFormRegister>()
   const [phone, setPhone] = useState<InputFormRegister["phone"]>("");
-  const onHandleSubmit: SubmitHandler<InputFormRegister> = (data) => {
-    // api call
 
+  const userContext = useContext(UserDataContext);
+  // user => userContext.user
+  // setUser => userContext.setUser
+  const onHandleSubmit: SubmitHandler<InputFormRegister> = async (information) => {
+    // api call
+    try {
+     
+
+      const requestData = {
+        name: information.name,
+        email: information.email,
+        password: information.password,
+        phone,
+        address: information.address
+      };
+      
+      const response = await axios.post(
+          "http://localhost:8080/api/v1/auth/register",
+          requestData,
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+      )
+
+      const responseData = response.data;
+      console.log("Register Response", response)
+      console.log("Register Response", responseData)
+      if(response.status === 201){
+        const {token, email, name, role, user_id, phone, address} = response.data;
+        const userData = {token, email, name, role, user_id, phone, address};
+
+        localStorage.setItem("auth-token", token);
+        localStorage.setItem("user", JSON.stringify(userData));
+
+        userContext?.setUser(userData);
+
+        userContext?.setUser(responseData)
+        
+        // reset();
+        setPhone("");
+        navigate("/user/homepage");
+      }
+      else{
+        alert(`Error: ${responseData.message}`)
+      }
+
+
+
+    } catch (error:any) {
+      if(axios.isAxiosError(error)){
+        alert(error.response?.data?.message || "Registration failed!")
+      }
+      else{
+        console.log(`error: ${error}`)
+      }
+      
+    }
+   
     // console data
-    console.log(data)
+    console.log(information)
   }
 
-  console.log(watch("email"))
+  // console.log(watch("email"))
   return (
     <div className='bg-gray-300 w-full h-screen px-60 py-30'>
       {/* form background */}
@@ -36,6 +98,7 @@ const Register = () => {
 
         {/* form component */}
         <div>
+          {/* form for backend */}
           <form
             onSubmit={handleSubmit(onHandleSubmit)}
             className='grid grid-cols-1 gap-2'
@@ -125,7 +188,7 @@ const Register = () => {
             </div>
             {/* register btn */}
             <div className='mb-5'>
-              <button type='submit' className='w-full bg-orange-400 py-2 rounded-sm text-black font-semibold'>Sign In</button>
+              <button type='submit' className='w-full bg-orange-400 py-2 rounded-sm text-black font-semibold'>Sign up</button>
             </div>
           </form>
         </div>

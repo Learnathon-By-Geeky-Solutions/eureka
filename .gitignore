@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+echo "src/main/resources/application.yml" >> .gitignore
+
+echo ".env" >> .gitignore

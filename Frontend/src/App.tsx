@@ -6,6 +6,8 @@ import './App.css'
 import Home from './pages/Home'
 import LogIn from './pages/LogIn'
 import Register from './pages/Register'
+import UserProtectWrapper from './components/UserProtectWrapper'
+import UserHome from './pages/UserHome'
 // import { Link } from 'react-router'
 
 
@@ -18,6 +20,11 @@ function App() {
         <Route path='/' element={<Home/>}/>
         <Route path='/login' element={<LogIn/>}/>
         <Route path='/register' element={<Register/>}/>
+        <Route path='/user/homepage' element={
+          <UserProtectWrapper>
+            <UserHome/>
+          </UserProtectWrapper>
+        }/>
         
       </Routes>
      
