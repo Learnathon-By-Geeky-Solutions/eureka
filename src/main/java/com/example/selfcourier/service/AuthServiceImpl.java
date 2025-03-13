@@ -70,7 +70,7 @@ public class AuthServiceImpl implements AuthService {
         return LoginResponse.builder()
                 .token(jwtToken)
                 .email(user.get().getEmail())
-                .user_id(user.get().getUser_id())
+                .userId(user.get().getUserId())
                 .role(user.get().getRole().name())
                 .name(user.get().getName())
                 .build();
@@ -89,7 +89,7 @@ public class AuthServiceImpl implements AuthService {
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .address(user.getAddress())
-                .user_id(user.getUser_id())
+                .userId(user.getUserId())
                 .role(user.getRole().name())
                 .build();
     }

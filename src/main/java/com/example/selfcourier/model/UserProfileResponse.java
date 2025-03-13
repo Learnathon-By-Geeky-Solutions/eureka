@@ -8,10 +8,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserProfileResponse {
-    public String name;
-    public String email;
-    public String role;
-    public String address;
-    public String phone;
-    public Long user_id;
+    private String name;
+    private String email;
+    private String role;
+    private String address;
+    private String phone;
+    private Long userId;
 }

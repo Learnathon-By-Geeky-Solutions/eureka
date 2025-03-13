@@ -5,15 +5,14 @@ import com.example.selfcourier.config.JwtService;
 import com.example.selfcourier.error.DefaultException;
 import com.example.selfcourier.model.*;
 import com.example.selfcourier.service.AuthService;
-import jakarta.servlet.http.HttpServlet;
+
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.attribute.UserPrincipal;
+
 
 
 @RequestMapping("/api/v1")
@@ -52,10 +51,6 @@ public class AuthController {
         if(email == null){
             return ResponseEntity.status(401).build();
         }
-//        String email = userDetails.getUsername();
-//        if(userDetails.getUsername() == null){
-//            throw new DefaultException("User not found with this email", 401);
-//        }
 
         return ResponseEntity.status(201).body(authService.getUserProfile(email));
     }
