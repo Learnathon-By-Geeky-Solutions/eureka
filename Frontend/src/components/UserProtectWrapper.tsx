@@ -28,15 +28,14 @@ const UserProtectWrapper = ({ children }: Props) => {
             return;
         }
 
-        const userData = JSON.parse(storeUser);
+        
 
-        const emailFindUserContext = userData.email;
-        console.log("From context", emailFindUserContext);
-        console.log("Token from context: ", userData.token);
+       
+        const baseURL = import.meta.env.baseURL;
 
 
         // get user information
-        axios.get(`http://localhost:8080/api/v1/auth/profile`, {
+        axios.get(`${baseURL}/api/v1/auth/profile`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -50,7 +49,7 @@ const UserProtectWrapper = ({ children }: Props) => {
                 localStorage.setItem("user", JSON.stringify(userData));
 
                 userContext?.setUser(userData);
-                console.log("From protection wrapper. ", userContext?.user);
+                
                 
             }
         }).catch(error => {

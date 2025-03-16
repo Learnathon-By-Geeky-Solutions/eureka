@@ -61,7 +61,7 @@ class SelfCourierApplicationTests {
         user.setEmail("user10@example.com");
         user.setPhone("01700931441");
         user.setAddress("Dhaka, Mirpur");
-        user.setUserId(3L); // 3 -> int, 3L -> long
+        user.setUserId(3L);
         user.setRole(Role.USER);  // Role is a Role objects
 
         when(authRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
@@ -75,14 +75,14 @@ class SelfCourierApplicationTests {
         assertEquals("01700931441", response.getPhone());
         assertEquals("Dhaka, Mirpur", response.getAddress());
         assertEquals(3L, response.getUserId());
-        assertEquals("USER", response.getRole());
+        assertEquals(Role.USER.toString(), response.getRole());
 
     }
     @Test
     void testGetUserProfileByEmail_NotFound(){
-        when(authRepository.findByEmail("Unkown@sample.com")).thenReturn(Optional.empty());
+        when(authRepository.findByEmail("unknow@sample.com")).thenReturn(Optional.empty());
 
-        DefaultException exception = assertThrows(DefaultException.class, ()-> authService.getUserProfile("Unkown@sample.com"));
+        DefaultException exception = assertThrows(DefaultException.class, ()-> authService.getUserProfile("unknow@sample.com"));
         assertEquals("User not founded", exception.getMessage());
     }
 

@@ -53,12 +53,11 @@ public class AuthController {
         try {
             email = jwtService.extractUserName(token);  // Extract the username (email) from the token
         } catch (Exception e) {
-            System.out.println("Error extracting token: " + e.getMessage());
+
             return ResponseEntity.status(401).build();  // Token extraction failed
         }
 
-        System.out.println("Token: " + token);
-        System.out.println("Email: " + email);
+
 
         if (email == null) {
             return ResponseEntity.status(401).build();  // Invalid token or email

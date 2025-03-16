@@ -37,10 +37,12 @@ const Register = () => {
         phone,
         address: information.address
       };
-      console.log('Register page',requestData);
+      
+      const baseURL = import.meta.env.baseURL;
       
       const response = await axios.post(
-          "http://localhost:8080/api/v1/auth/register",
+       
+          `${baseURL}/api/v1/auth/register`,
           requestData,
           {
             headers: {
@@ -50,8 +52,7 @@ const Register = () => {
       )
 
       const responseData = response.data;
-      console.log("Register Response", response)
-      console.log("Register Response", responseData)
+      
       if(response.status === 201){
         const {token, email, name, role, phone, address} = response.data;
         const userData = {token, email, name, role, phone, address};
@@ -60,7 +61,7 @@ const Register = () => {
         localStorage.setItem("user", JSON.stringify(userData));
 
         userContext?.setUser(userData);
-        console.log("From Register context",userContext?.user);
+        
         // reset();
         
         navigate("/user/homepage");
@@ -81,11 +82,10 @@ const Register = () => {
       
     }
    
-    // console data
-    console.log(information)
+    
   }
 
-  // console.log(watch("email"))
+  
   return (
     <div className='bg-gray-300 w-full h-screen px-60 py-30'>
       {/* form background */}

@@ -8,13 +8,13 @@ import { useNavigate } from 'react-router'
 type InputFormSignIn = {
   email: string,
   password: string,
-  termAndCondition: boolean
+  acceptedTerms: boolean
 }
 
 
 const LogIn = () => {
   // useForm for form;
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<InputFormSignIn>();
+  const { register, handleSubmit, formState: { errors } } = useForm<InputFormSignIn>();
 
   const userContext = useContext(UserDataContext);
   const navigate = useNavigate();
@@ -29,9 +29,9 @@ const LogIn = () => {
         email: information.email,
         password: information.password,
       }
-
+      const baseURL = import.meta.env.baseURL;
       const response = await axios.post(
-        "http://localhost:8080/api/v1/auth/login",
+        `${baseURL}/api/v1/auth/login`,
         requestData,
         {
           headers: {
@@ -41,9 +41,7 @@ const LogIn = () => {
       )
 
       const responseData = response.data;
-      console.log("Log in Response", response)
-      console.log("Log in Response data", responseData)
-      console.log("Log in Response status ", response.status)
+      
       if (response.status === 200) {
         const {token, email, name, role, user_id, phone, address} = response.data;
         const userData = {token, email, name, role, user_id, phone, address};
@@ -52,9 +50,7 @@ const LogIn = () => {
         localStorage.setItem("user", JSON.stringify(userData));
 
         userContext?.setUser(userData);
-        console.log("From log in",userContext?.user);
-        console.log("From token log in", userData.token);
-        console.log("From user data log in", userData);
+        
         // reset();
        
         navigate("/user/homepage");
@@ -65,7 +61,7 @@ const LogIn = () => {
 
 
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         alert(error.response?.data?.message || "Registration failed!")
       }
@@ -74,11 +70,9 @@ const LogIn = () => {
       }
     }
     // check on console form data
-    console.log(information)
+    
   }
 
-  // watch for change in form debug
-  // console.log(watch("gmail"))
 
   return (
     <div className='bg-green-400 w-full h-screen px-60 py-30'>
@@ -152,13 +146,13 @@ const LogIn = () => {
                   <input
                     type="checkbox"
                     id="terms"
-                    {...register("termAndCondition", { required: "You must agree to the terms and conditions" })}
+                    {...register("acceptedTerms", { required: "You must agree to the terms and conditions" })}
                     className='w-4 h-4 hover:cursor-pointer'
                   />
                   <label className='text-blue-500 px-2 text-sm' htmlFor="terms">I agree to the terms and conditions</label>
 
                 </div>
-                {errors.termAndCondition && <p className="text-red-500 text-sm">{errors.termAndCondition.message}</p>}
+                {errors.acceptedTerms && <p className="text-red-500 text-sm">{errors.acceptedTerms.message}</p>}
               </div>
 
               {/* sign btn */}
@@ -180,7 +174,6 @@ const LogIn = () => {
           <div className="absolute inset-0 bg-black opacity-20" />
 
 
-          {/* <img className='w-full' src="/images/sign in page right image.png" alt="" /> */}
         </div>
       </div>
 
