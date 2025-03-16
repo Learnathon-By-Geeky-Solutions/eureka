@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useState } from "react"
 
 export type User = {
-    user_id: number;
+    userId?: number;
     name?: string;
     email: string;
     role?: string;

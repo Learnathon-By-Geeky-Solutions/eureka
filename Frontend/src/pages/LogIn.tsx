@@ -48,11 +48,13 @@ const LogIn = () => {
         const {token, email, name, role, user_id, phone, address} = response.data;
         const userData = {token, email, name, role, user_id, phone, address};
 
-        localStorage.setItem("auth-token", token);
+        localStorage.setItem("auth-token", userData.token);
         localStorage.setItem("user", JSON.stringify(userData));
 
         userContext?.setUser(userData);
         console.log("From log in",userContext?.user);
+        console.log("From token log in", userData.token);
+        console.log("From user data log in", userData);
         // reset();
        
         navigate("/user/homepage");

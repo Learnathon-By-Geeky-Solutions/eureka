@@ -40,18 +40,38 @@ public class AuthController {
     }
 
     @GetMapping("/auth/profile")
-    public ResponseEntity<UserProfileResponse> getUserProfile(HttpServletRequest request) throws DefaultException{
+    public ResponseEntity<UserProfileResponse> getUserProfile(HttpServletRequest request) throws DefaultException {
         String authHeader = request.getHeader("Authorization");
 
-        if(authHeader == null || authHeader.startsWith("Bearer ")){
-           return ResponseEntity.status(401).build();
-        }
-        String token = authHeader.substring(7); // remove Bearer
-        String email = jwtService.extractUserName(token);
-        if(email == null){
-            return ResponseEntity.status(401).build();
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(401).build();  // Missing Bearer token
         }
 
-        return ResponseEntity.status(201).body(authService.getUserProfile(email));
+        String token = authHeader.substring(7);  // Remove "Bearer "
+        String email = null;
+
+        try {
+            email = jwtService.extractUserName(token);  // Extract the username (email) from the token
+        } catch (Exception e) {
+            System.out.println("Error extracting token: " + e.getMessage());
+            return ResponseEntity.status(401).build();  // Token extraction failed
+        }
+
+        System.out.println("Token: " + token);
+        System.out.println("Email: " + email);
+
+        if (email == null) {
+            return ResponseEntity.status(401).build();  // Invalid token or email
+        }
+
+        // Fetch user profile using the extracted email
+        UserProfileResponse userProfile = authService.getUserProfile(email);
+
+        if (userProfile == null) {
+            return ResponseEntity.status(404).build();  // User not found
+        }
+
+        return ResponseEntity.ok(userProfile);  // Return the user profile
     }
+
 }

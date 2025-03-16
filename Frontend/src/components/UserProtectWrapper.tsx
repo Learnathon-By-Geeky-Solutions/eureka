@@ -32,17 +32,17 @@ const UserProtectWrapper = ({ children }: Props) => {
 
         const emailFindUserContext = userData.email;
         console.log("From context", emailFindUserContext);
-
+        console.log("Token from context: ", userData.token);
 
 
         // get user information
         axios.get(`http://localhost:8080/api/v1/auth/profile`, {
             headers: {
-                Authorization: `bearer ${token}`
+                Authorization: `Bearer ${token}`
             }
         }).then(response => {
             console.log("call for profile", response.data, response.status)
-            if (response.status === 201) {
+            if (response.status === 200) {
                 const { email, name, role, user_id, phone, address } = response.data;
                 const userData = { email, name, role, user_id, phone, address };
 

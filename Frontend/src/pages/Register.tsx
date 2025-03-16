@@ -37,6 +37,7 @@ const Register = () => {
         phone,
         address: information.address
       };
+      console.log('Register page',requestData);
       
       const response = await axios.post(
           "http://localhost:8080/api/v1/auth/register",
@@ -52,18 +53,16 @@ const Register = () => {
       console.log("Register Response", response)
       console.log("Register Response", responseData)
       if(response.status === 201){
-        const {token, email, name, role, user_id, phone, address} = response.data;
-        const userData = {token, email, name, role, user_id, phone, address};
+        const {token, email, name, role, phone, address} = response.data;
+        const userData = {token, email, name, role, phone, address};
 
-        localStorage.setItem("auth-token", token);
+        localStorage.setItem("auth-token", userData.token);
         localStorage.setItem("user", JSON.stringify(userData));
 
         userContext?.setUser(userData);
-
-        userContext?.setUser(responseData)
-        
+        console.log("From Register context",userContext?.user);
         // reset();
-        setPhone("");
+        
         navigate("/user/homepage");
       }
       else{

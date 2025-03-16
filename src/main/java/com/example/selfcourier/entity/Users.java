@@ -22,7 +22,9 @@ public class Users implements UserDetails {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "userId" , nullable = false, unique = true)
     private Long userId;
+
     private String name;
     private String email;
     private String address;

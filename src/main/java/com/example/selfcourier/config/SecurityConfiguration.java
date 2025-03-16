@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+
 
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -49,7 +49,7 @@ public class SecurityConfiguration {
                                 ).permitAll()
                         .requestMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/worker/**").hasAuthority("WORKER")
-                        .requestMatchers("/api/v1/auth/profile/**").permitAll()
+                        .requestMatchers("/api/v1/auth/profile/**").authenticated()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement((session) -> session
