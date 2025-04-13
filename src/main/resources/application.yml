@@ -1,21 +1,30 @@
-server:
-  port: 8080
+#server:
+#  port: 8080
+#
+#spring:
+#  application:
+#    name: SelfCourier
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    url: ${DB_URL}
+#    username: ${DB_USERNAME}
+#    password: ${DB_PASSWORD}
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+#        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+#
+#management:
+#  endpoints:
+#    web
 
 spring:
-  application:
-    name: SelfCourier
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev} # default active file dev. railway makes prod.

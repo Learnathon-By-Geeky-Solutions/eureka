@@ -5,6 +5,8 @@ import com.example.selfcourier.error.DefaultMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
@@ -17,12 +19,13 @@ import java.io.IOException;
 public class UserAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
+    private static final Logger logger = LoggerFactory.getLogger(UserAuthenticationEntryPoint.class);
     @Override
     public void commence(
             HttpServletRequest request,
             HttpServletResponse response,
             AuthenticationException authException) throws IOException {
+        logger.error("Unauthorized request: {}",authException.getMessage());
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         OBJECT_MAPPER.writeValue(response.getOutputStream(),new DefaultMessage("Failed", "Unauthorized", 401));

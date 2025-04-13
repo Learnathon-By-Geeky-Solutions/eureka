@@ -17,7 +17,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1")
 @RestController
-@CrossOrigin(origins = "http://localhost:5173",  allowCredentials = "true") // Allow frontend
+@CrossOrigin(origins = {
+        "http://localhost:5173",// Allow frontend
+        "http://10.0.2.2:8080", // Allow Mobile emulator
+
+},  allowCredentials = "true")
+
 @RequiredArgsConstructor
 public class AuthController {
 

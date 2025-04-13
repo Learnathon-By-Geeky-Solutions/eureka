@@ -67,7 +67,9 @@ public class SecurityConfiguration {
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("http://localhost:5173"));  // fontend host port id
+        config.setAllowedOrigins(List.of("http://localhost:5173", "http://192.168.0.103:8081, http://10.0.2.2:8080"));// fontend host port id
+//        config.addAllowedOriginPattern("http://192.168.*.*:*");
+//        config.allowedOrigins("http://10.0.2.2:8080")
         config.setAllowedMethods(List.of("POST", "PUT", "PATCH", "GET", "OPTIONS", "DELETE"));
         config.setAllowedHeaders(List.of("Authorization", "Accept", "X-Requested-With", "Content-Type"));
         config.setExposedHeaders(List.of("Authorization"));
