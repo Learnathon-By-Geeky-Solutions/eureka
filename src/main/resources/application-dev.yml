@@ -19,3 +19,8 @@ spring:
         implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+imagekit:
+  publicKey: ${imageKit_PUBLIC_KEY}
+  privateKey: ${imageKit_PRIVATE_KEY}
+  urlEndpoint: ${imageKit_URL_ENDPOINT}

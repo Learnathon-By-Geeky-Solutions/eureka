@@ -34,19 +34,22 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .cors(cors-> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers(
-                                new AntPathRequestMatcher("/api/v1/auth/register"),
-                                new AntPathRequestMatcher("/api/v1/auth/login"),
-                                new AntPathRequestMatcher("/api/v1/auth/welcome")
-
-                        )
-                )
+//                .csrf(csrf -> csrf
+//                        .ignoringRequestMatchers(
+//                                new AntPathRequestMatcher("/api/v1/auth/register"),
+//                                new AntPathRequestMatcher("/api/v1/auth/login"),
+//                                new AntPathRequestMatcher("/api/v1/auth/welcome"),
+//                                new AntPathRequestMatcher("/api/v1/imagekit/auth")
+//
+//                        )
+//                        .disable().authorizeHttpRequests()
+//                )
                 .authorizeHttpRequests((requests) -> requests.requestMatchers
                                 (
                                         "/api/v1/auth/register",
                                         "/api/v1/auth/login",
-                                        "/api/v1/welcome"
+                                        "/api/v1/welcome",
+                                        "/api/v1/imagekit/auth"
                                 ).permitAll()
                         .requestMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/worker/**").hasAuthority("WORKER")
