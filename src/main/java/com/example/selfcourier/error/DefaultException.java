@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class DefaultException extends RuntimeException{
     private String message;
     private Integer statusCode;
+
 }
