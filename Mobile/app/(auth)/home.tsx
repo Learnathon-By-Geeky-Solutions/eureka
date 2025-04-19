@@ -1,4 +1,10 @@
-import { StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  Touchable,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 // assets\images\courier logo.png
@@ -21,22 +27,51 @@ export default function AuthHome() {
       </View>
       {/* slogan */}
       <View style={styles.logoTextContainer}>
-        <Text style={{textAlign: 'center', fontSize: 18}}>Fast, Reliable, and Hassle-Free Deliveries{"\n"}Just a Click Away!</Text>
+        <Text style={{ textAlign: "center", fontSize: 18 }}>
+          Fast, Reliable, and Hassle-Free Deliveries{"\n"}Just a Click Away!
+        </Text>
         {/* <Text style={{}}>Sign in to book your deliveries with ease!</Text>
         <Text style={{}}>Track your parcels in real-time, enjoy secure and affordable shipping, and experience seamless door-to-door service.</Text>
         <Text style={{}}>Whether it's a small package or big shipment, we've got you covered.</Text> */}
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={()=>router.push("/(auth)/login")}>
-            <Text style={{color:"white", fontSize: 20, fontWeight: 500,  textAlign: "center"}}>Log In</Text>
-        </TouchableOpacity>
-      </View>
 
-      <View style={[styles.buttonContainer, {backgroundColor:"black"} ]}>
-        <TouchableOpacity style={styles.button} onPress={()=>router.push("/(auth)/register")}>
-            <Text style={{color:"white", fontSize: 20, fontWeight: 500, textAlign: "center"}}>Create Account</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => router.push("/(auth)/login")}
+      >
+        
+        <View style={styles.buttonContainer}>
+          <Text
+            style={{
+              color: "white",
+              fontSize: 20,
+              fontWeight: 500,
+              textAlign: "center",
+            }}
+          >
+            Log In
+          </Text>
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => router.push("/(auth)/register")}
+      >
+        <View style={[styles.buttonContainer, { backgroundColor: "black" }]}>
+          <Text
+            style={{
+              color: "white",
+              fontSize: 20,
+              fontWeight: 500,
+              textAlign: "center",
+            }}
+          >
+            Create Account
+          </Text>
+        </View>
+      </TouchableOpacity>
+
       {/* <Image source={logo} style={styles.logoImage}/> */}
     </View>
   );
@@ -48,19 +83,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FFECAA"
+    backgroundColor: "#FFECAA",
   },
   logoImage: {
     width: 200,
     height: 200,
-    borderRadius: 100
+    borderRadius: 100,
   },
-  logoTextContainer:{
+  logoTextContainer: {
     width: "80%",
     marginTop: 20,
-    marginBottom: 10
+    marginBottom: 10,
   },
-  buttonContainer:{
+  buttonContainer: {
     marginTop: 5,
     // marginBottom:5,
     backgroundColor: "orange",
@@ -71,8 +106,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     // rowGap: 5
   },
-  button:{
-    width: "100%"
-    
-  }
+  button: {
+    width: "100%",
+  },
 });

@@ -253,7 +253,7 @@ export default function Register() {
                 <View>
                   <Text style={styles.inputLabel}>Address</Text>
                   <View
-                    style={[styles.passwordContainer, styles.inputContainer]}
+                    style={[styles.inputContainer]}
                   >
                     <Controller
                       name="address"
@@ -400,5 +400,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     borderRadius: 20,
+    justifyContent:"center"
   },
 });

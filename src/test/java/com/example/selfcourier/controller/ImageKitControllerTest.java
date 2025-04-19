@@ -6,7 +6,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
-//import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ImageKitControllerTest.class)
 @Import(ImageKitControllerTest.TestConfig.class)
-public class ImageKitControllerTest {
+class ImageKitControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -35,7 +34,7 @@ public class ImageKitControllerTest {
     private ImageKitService imageKitService;
 
     @Test
-    public void testGetImageKitAuth() throws Exception{
+     void testGetImageKitAuth() throws Exception{
         Map<String, String> testAuth = new HashMap<>();
         testAuth.put("token", "test-token");
         testAuth.put("signature", "test-signature");

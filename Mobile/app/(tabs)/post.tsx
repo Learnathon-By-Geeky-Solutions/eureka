@@ -1,4 +1,5 @@
 import CreatePostModal from "@/components/CreatePostModal";
+import { useAuth } from "@/context/AuthContext";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -6,15 +7,28 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function PostListScreen() {
   const [isCreatePostModal, setIsCreatePostModal] = useState<boolean>(false);
+  const {onLogout} = useAuth();
 
   const onCreatePostModalClose = () => {
     setIsCreatePostModal(!isCreatePostModal);
   };
-  console.log(isCreatePostModal)
+  console.log(isCreatePostModal);
   return (
     <SafeAreaView style={styles.mainContainer}>
       {/* create post view */}
-      <TouchableOpacity onPress={()=>setIsCreatePostModal(true)}>
+      <TouchableOpacity
+        style={{
+          paddingHorizontal: 10,
+          paddingVertical: 10,
+          backgroundColor: "white",
+          width: "30%"
+        }}
+
+        onPress={onLogout}
+      >
+        <Text style={{textAlign:'center', fontSize: 24}}>log out</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => setIsCreatePostModal(true)}>
         <View style={styles.createPostContainer}>
           <FontAwesome5 name="user-circle" size={24} color="black" />
           <View style={styles.createPostAreaContainer}>
@@ -23,6 +37,7 @@ export default function PostListScreen() {
                 Create a post...
               </Text>
             </View>
+
             <View style={styles.createPostBtn}>
               <TouchableOpacity>
                 <Text
@@ -39,7 +54,11 @@ export default function PostListScreen() {
           </View>
         </View>
       </TouchableOpacity>
-      <CreatePostModal isVisible={isCreatePostModal} onClose={onCreatePostModalClose} modalTitle="Create a delivery post"/>
+      <CreatePostModal
+        isVisible={isCreatePostModal}
+        onClose={onCreatePostModalClose}
+        modalTitle="Create a delivery post"
+      />
       {/* collected all post list user own */}
       <Text>Post List Screen</Text>
     </SafeAreaView>

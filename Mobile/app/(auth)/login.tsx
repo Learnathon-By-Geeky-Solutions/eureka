@@ -32,13 +32,14 @@ export default function Login() {
   const onChange = (arg: {
     nativeEvent: { text: string };
   }): { value: string } => {
-    console.log(arg.nativeEvent.text);
+    // console.log(arg.nativeEvent.text);
     return {
       value: arg.nativeEvent.text,
     };
   };
 
   const onSubmit = async (data:formData) =>{
+    // console.log("handle from login")
     setServerError("");
     const result = await onLogin?.(
       data.email,
@@ -287,9 +288,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#F3E9B5",
     paddingHorizontal: 20,
     height: 70,
-    paddingVertical: 10,
-    marginTop: 10,
+    // paddingVertical: 20,
+        marginTop: 10,
     marginBottom: 10,
     borderRadius: 20,
+    justifyContent:"center"
   },
 });

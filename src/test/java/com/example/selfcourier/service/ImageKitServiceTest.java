@@ -5,15 +5,14 @@ import org.junit.jupiter.api.Test;
 import static  org.junit.jupiter.api.Assertions.*;
 import java.util.Map;
 
-public class ImageKitServiceTest {
+ class ImageKitServiceTest {
 
     // unit test image kit service :
     @Test
-    public void testGenerateAuth(){
+     void testGenerateAuth(){
         ImageKitAuthConfig  mockConfig = new ImageKitAuthConfig();
 
-        // setter
-//        Object mockConfig;
+      
         setField(mockConfig, "publicKey", "test_public_key");
         setField(mockConfig, "privateKey", "test_private_key");
         setField(mockConfig, "urlEndpoint", "http://ik.imagekit.io/test");
