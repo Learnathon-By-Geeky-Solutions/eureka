@@ -47,7 +47,7 @@ export default function Register() {
   const onChange = (arg: {
     nativeEvent: { text: string };
   }): { value: string } => {
-    console.log(arg.nativeEvent.text);
+    
     return {
       value: arg.nativeEvent.text,
     };
@@ -55,14 +55,7 @@ export default function Register() {
 
   const onSubmit = async (data: formData) => {
     setServerError("");
-    console.log(
-      "Form data from register",
-      data.name,
-      data.password,
-      data.phone,
-      data.email,
-      data.address
-    );
+    
     const result = await onRegister?.(
       data.name,
       data.email,
@@ -76,7 +69,7 @@ export default function Register() {
     } else {
       router.replace("/(auth)/login");
     }
-    console.log("Submit process", data);
+    
   };
 
   return (

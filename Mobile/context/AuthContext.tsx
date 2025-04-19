@@ -5,6 +5,8 @@ import {
   setStorageItemAsync,
 } from "./Storage";
 import axios from "axios";
+import jwt_Decode from "jwt-decode";
+
 
 interface AuthProps {
   authState?: { token: string | null; authentication: boolean | null };
@@ -25,7 +27,7 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-const token_key = process.env.TOKEN_KEY;
+const token_key = process.env.EXPO_PUBLIC_API_KEY;
 const baseURL =
   process.env.EXPO_PUBLIC_API_URL || "https://default-api-url.com";
 console.log("Auth context base url", baseURL);
@@ -47,15 +49,16 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     const loadToken = async () => {
       const Token = token_key ? await getStorageItemAsync(token_key) : null;
-      console.log("Auth token loadToken", Token);
+      // console.log("Auth token loadToken", Token);
+      // check vaildation time
       if (Token) {
+        // const decodeToken = jwt_Decode<>(Token);
         setAuthState({
           token: Token,
           authentication: true,
         });
       }
       axios.defaults.headers.common["Authorization"] = `Bearer ${Token}`;
-      
     };
     loadToken();
   }, []);
@@ -76,9 +79,9 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         password,
         address,
       };
-      console.log("on Register request body", requestBody);
+      
       // axios headers deleted
-      delete axios.defaults.headers.common["Authorization"]; 
+      delete axios.defaults.headers.common["Authorization"];
       const response = await axios.post(
         `${baseURL}/api/v1/auth/register`,
         requestBody,
@@ -88,9 +91,9 @@ export default function AuthProvider({ children }: AuthProviderProps) {
           },
         }
       );
-      console.log("response from register,", response.data, response.status);
+      
       if (response.status === 201) {
-        // setUser(response.data)
+        
         return { success: true };
       }
       return { success: false, msg: "Response status", response };
@@ -106,7 +109,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         email,
         password,
       };
-      delete axios.defaults.headers.common["Authorization"]; 
+      delete axios.defaults.headers.common["Authorization"];
+      
       const response = await axios.post(
         `${baseURL}/api/v1/auth/login`,
         requestBody,
@@ -117,7 +121,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         }
       );
 
-      console.log("auth respone for log in ", response);
+      // console.log("auth respone for log in ", response);
       const token = response.data.token;
       if (token) {
         setAuthState({
@@ -139,8 +143,10 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         return { success: false, response, msg: "Log in method error" };
       }
     } catch (error) {
-      console.log("log in error", error);
-      return { error, msg: (error as any).response.data.msg };
+      const errorMsg =
+        (error as any)?.response?.data?.msg || "An unexpected error occurred";
+      console.log("log in error", errorMsg, error);
+      return { error, msg: errorMsg };
     }
   };
 
@@ -148,7 +154,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     token_key ? await deleteStorageItemAsync(token_key) : null;
 
     // axios.defaults.headers.common["Authorization"] = "";
-    delete axios.defaults.headers.common["Authorization"]; 
+    delete axios.defaults.headers.common["Authorization"];
 
     setAuthState({
       token: null,
