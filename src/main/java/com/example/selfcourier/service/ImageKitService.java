@@ -1,6 +1,7 @@
 package com.example.selfcourier.service;
 
 import com.example.selfcourier.config.ImageKitAuthConfig;
+import lombok.Value;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -20,7 +21,7 @@ public class ImageKitService {
         String signature = generateSignature(config.getPrivateKey(), String.valueOf(timeStemp));
 
         Map<String, String> authParams = new HashMap<>();
-        String tokenImageKitAuthUUID = "53697526-efe0-4874-8b9e-34f73d9d03e2";
+        String tokenImageKitAuthUUID = System.getenv("tokenImageKitAuthUUID");
         authParams.put("token", tokenImageKitAuthUUID);
         authParams.put("expire", String.valueOf(timeStemp + 60*5)); // 5 min expired
         authParams.put("signature", signature);
@@ -31,8 +32,8 @@ public class ImageKitService {
 
     private String generateSignature(String privateKey, String timeStemp){
         try{
-            Mac sha1Mac = Mac.getInstance("HmacSHA1");
-            SecretKeySpec secretKey = new SecretKeySpec(privateKey.getBytes(), "HmacSHA1");
+            Mac sha1Mac = Mac.getInstance("SHA-512");
+            SecretKeySpec secretKey = new SecretKeySpec(privateKey.getBytes(), "SHA-512");
             sha1Mac.init(secretKey);
             byte[] hmacData = sha1Mac.doFinal(timeStemp.getBytes());
             return Base64.getEncoder().encodeToString(hmacData);

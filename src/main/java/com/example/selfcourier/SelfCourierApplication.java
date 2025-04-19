@@ -17,6 +17,7 @@ public class SelfCourierApplication {
         System.setProperty("imageKit_PUBLIC_KEY", dotenv.get("imageKit_PUBLIC_KEY"));
         System.setProperty("imageKit_PRIVATE_KEY", dotenv.get("imageKit_PRIVATE_KEY"));
         System.setProperty("imageKit_URL_ENDPOINT", dotenv.get("imageKit_URL_ENDPOINT"));
+        System.setProperty("tokenImageKitAuthUUID", dotenv.get("tokenImageKitAuthUUID"));
         SpringApplication.run(SelfCourierApplication.class, args);
     }
 

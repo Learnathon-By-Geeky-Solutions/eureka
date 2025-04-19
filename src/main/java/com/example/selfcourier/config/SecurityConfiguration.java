@@ -3,6 +3,7 @@ package com.example.selfcourier.config;
 
 import lombok.RequiredArgsConstructor;
 
+import lombok.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -19,6 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -55,12 +57,12 @@ public class SecurityConfiguration {
                         .authenticationEntryPoint(userAuthenticationEntryPoint));
         return httpSecurity.build();
     }
-
+    String allowOrigin = System.getenv("CORS_ALLOWED_ORIGINS");
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("http://localhost:5173", "http://192.168.0.103:8081, http://10.0.2.2:8080"));// fontend host port id
+        config.setAllowedOrigins(Arrays.asList(allowOrigin.split(",")));// fontend host port id
 //        config.addAllowedOriginPattern("http://192.168.*.*:*");
 //        config.allowedOrigins("http://10.0.2.2:8080")
         config.setAllowedMethods(List.of("POST", "PUT", "PATCH", "GET", "OPTIONS", "DELETE"));
