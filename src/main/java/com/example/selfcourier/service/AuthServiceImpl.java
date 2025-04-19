@@ -15,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -67,9 +69,28 @@ public class AuthServiceImpl implements AuthService {
         val jwtToken = jwtService.generateToken(user.get());
         return LoginResponse.builder()
                 .token(jwtToken)
-                .user_id(user.get().getUser_id())
+                .email(user.get().getEmail())
+                .userId(user.get().getUserId())
                 .role(user.get().getRole().name())
                 .name(user.get().getName())
+                .build();
+    }
+
+    @Override
+    public  UserProfileResponse getUserProfile(String email){
+        Optional<Users> usersOptional = authRepository.findByEmail(email);
+        if(usersOptional.isEmpty()){
+            throw new DefaultException("User not found with this email", 404);
+        }
+        Users user = usersOptional.get();
+
+        return UserProfileResponse.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .address(user.getAddress())
+                .userId(user.getUserId())
+                .role(user.getRole().name())
                 .build();
     }
 }
