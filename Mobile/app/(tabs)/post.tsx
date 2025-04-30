@@ -1,17 +1,107 @@
 import CreatePostModal from "@/components/CreatePostModal";
 import { useAuth } from "@/context/AuthContext";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Entypo, FontAwesome5 } from "@expo/vector-icons";
+import axios from "axios";
+// import { Image } from "expo-image";
+import { useEffect, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View , Image, FlatList} from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+
+interface Post {
+  postID: string;
+  title: string;
+  description: string;
+  pickupLocation: { address: string };
+  dropLocation: { address: string };
+  images: { id: string; url: string; thumbnail: string }[];
+  category: string;
+  status: string;
+  createAt: string;
+}
+
+const baseURL =
+    process.env.EXPO_PUBLIC_API_URL || "https://default-api-url.com";
+// const token_key = process.env.EXPO_PUBLIC_API_KEY;
+
 
 export default function PostListScreen() {
   const [isCreatePostModal, setIsCreatePostModal] = useState<boolean>(false);
-  const {onLogout} = useAuth();
+  const [posts, setPosts] = useState<Post[]> ([]);
+
+  const {authState, onLogout} = useAuth();
 
   const onCreatePostModalClose = () => {
     setIsCreatePostModal(!isCreatePostModal);
+    fetchPost();
   };
+
+  const fetchPost = async()=>{
+    // get posts;
+    try {
+      const token = authState?.token;
+
+      const response = await axios.get(`${baseURL}/api/v1/posts`,{
+        headers:{
+          "Authorization" : `Bearer ${token}`
+        }
+      })
+
+      if(response.status === 200){
+        setPosts(response.data);
+      }
+    } catch (error) {
+      
+    }
+  }
+
+  useEffect(()=>{
+    fetchPost();
+  },[]);
+
+  // ---------------------- render posts: --------------------------- // 
+  const renderPostAll = ({ item }: { item: Post }) => (
+    <View
+      style={{
+        marginVertical: 10,
+        padding: 10,
+        backgroundColor: "white",
+        borderRadius: 10,
+      }}
+    >
+      {/* Image */}
+      {item.images.length > 0 && (
+        <Image
+          source={{ uri: item.images[0].url }}
+          style={{ width: "100%", height: 200, borderRadius: 10 }}
+          resizeMode="cover"
+        />
+      )}
+      
+      {/* Title */}
+      <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 10 }}>
+        {item.title}
+      </Text>
+
+      {/* Description */}
+      <Text style={{ marginVertical: 5 }}>{item.description}</Text>
+
+      {/* Pickup - Drop */}
+      <Text style={{ fontStyle: "italic", color: "gray" , fontSize: 20}}>
+        From: <Entypo name="address" size={18} color="blue" />
+        {item.pickupLocation.address}
+      </Text>
+      <Text style={{ fontStyle: "italic", color: "gray", fontSize: 20 }}>
+        To: <Entypo name="address" size={18} color="blue" />
+        {item.dropLocation.address}
+      </Text>
+
+      {/* Status */}
+      <Text style={{ marginTop: 5, color: "green" }}>
+        Status: {item.status}
+      </Text>
+    </View>
+  );
+
   console.log(isCreatePostModal);
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -60,7 +150,11 @@ export default function PostListScreen() {
         modalTitle="Create a delivery post"
       />
       {/* collected all post list user own */}
-      <Text>Post List Screen</Text>
+      
+      <FlatList data={posts} renderItem={renderPostAll} keyExtractor={(item)=>item.postID} contentContainerStyle={{padding: 10}}
+        ListEmptyComponent={<Text>Post List Screen</Text>}
+        
+        />
     </SafeAreaView>
   );
 }

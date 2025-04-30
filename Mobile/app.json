@@ -15,6 +15,15 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.mhdabdulkader.Mobile",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyD3HU7CFPk5rFJ24ZUpr5vqlph-n51pw_c"
+        }
       }
     },
     "web": {
@@ -33,10 +42,25 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "e3f75e0b-0541-4678-bc48-3fc36cc60054"
+      }
+    },
+    "owner": "mhdabdulkader"
   }
 }

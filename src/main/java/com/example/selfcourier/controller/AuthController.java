@@ -7,7 +7,9 @@ import com.example.selfcourier.model.*;
 import com.example.selfcourier.service.AuthService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +19,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1")
 @RestController
-
-
+//@CrossOrigin(origins = "*", )
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
     private  final JwtService jwtService;
+
+    @Value("${cors.allowOrigin}")
+    private String allowOrigin;
 
     @GetMapping("/welcome")
     public String welcome() {
@@ -31,12 +35,15 @@ public class AuthController {
     }
 
     @PostMapping("/auth/register")
-    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest) throws DefaultException {
+    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest , HttpServletResponse response) throws DefaultException {
+        addCorsHeaders(response);
         return ResponseEntity.status(201).body(authService.register(registerRequest));
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) throws DefaultException {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) throws DefaultException {
+        addCorsHeaders(response);
+        System.out.println("--------> log in request :  " + loginRequest+ " response "+ response);
         return ResponseEntity.status(200).body(authService.login(loginRequest));
     }
 
@@ -72,6 +79,16 @@ public class AuthController {
         }
 
         return ResponseEntity.ok(userProfile);  // Return the user profile
+    }
+
+    private void addCorsHeaders(HttpServletResponse response){
+        String[] origins = allowOrigin.split(",");
+        for(String origin:origins){
+            response.addHeader("Access-Control-Allow-Origin", origin.trim());
+        }
+        response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        response.addHeader("Access-Control-Allow-Credentials", "true");
     }
 
 }
