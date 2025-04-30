@@ -25,7 +25,10 @@ public class UserAuthenticationEntryPoint implements AuthenticationEntryPoint {
             HttpServletRequest request,
             HttpServletResponse response,
             AuthenticationException authException) throws IOException {
-        logger.error("Unauthorized request: {}",authException.getMessage());
+
+        String requestURI = request.getRequestURI();  // Log the request URI when access is unauthorized
+        logger.error("Unauthorized request on {}: {}", request.getServletPath(), request);
+
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         OBJECT_MAPPER.writeValue(response.getOutputStream(),new DefaultMessage("Failed", "Unauthorized", 401));

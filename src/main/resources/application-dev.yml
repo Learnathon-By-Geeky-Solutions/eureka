@@ -2,9 +2,6 @@ server:
   port: 8080
 
 spring:
-  config:
-    activate:
-      on-profile:dev
   application:
     name: SelfCourier
   datasource:
@@ -30,4 +27,4 @@ imagekit:
   tokenImageKitAuthUUID: ${tokenImageKitAuthUUID}
 
 cors:
-  allowed-origins: ${CORS_ALLOWED_ORIGINS}
+  allowOrigin: ${CORS_ALLOWED_ORIGINS}

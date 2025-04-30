@@ -14,6 +14,7 @@ public class SelfCourierApplication {
         System.setProperty("DB_URL", dotenv.get("DB_URL"));
         System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
         System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
+        System.setProperty("CORS_ALLOWED_ORIGINS", dotenv.get("CORS_ALLOWED_ORIGINS"));
         System.setProperty("imageKit_PUBLIC_KEY", dotenv.get("imageKit_PUBLIC_KEY"));
         System.setProperty("imageKit_PRIVATE_KEY", dotenv.get("imageKit_PRIVATE_KEY"));
         System.setProperty("imageKit_URL_ENDPOINT", dotenv.get("imageKit_URL_ENDPOINT"));

@@ -2,9 +2,6 @@ server:
   port: ${PGPORT}
 
 spring:
-  config:
-    activate:
-      on-profile: prod
   application:
     name: SelfCourier
   datasource:

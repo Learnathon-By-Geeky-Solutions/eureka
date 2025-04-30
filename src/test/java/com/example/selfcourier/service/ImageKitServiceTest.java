@@ -16,8 +16,8 @@ import java.util.Map;
         setField(mockConfig, "publicKey", "test_public_key");
         setField(mockConfig, "privateKey", "test_private_key");
         setField(mockConfig, "urlEndpoint", "http://ik.imagekit.io/test");
-
-        ImageKitService service = new ImageKitService(mockConfig);
+//        ImageKitService
+        ImageKitServiceImpl service = new ImageKitServiceImpl(mockConfig);
         Map<String, String> auth = service.generateAuth();
 
         assertNotNull(auth.get("token"));

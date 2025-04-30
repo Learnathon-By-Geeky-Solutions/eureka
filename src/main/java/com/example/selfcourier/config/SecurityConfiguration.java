@@ -4,6 +4,7 @@ package com.example.selfcourier.config;
 import lombok.RequiredArgsConstructor;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -11,11 +12,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 
-
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
@@ -31,17 +33,31 @@ public class SecurityConfiguration {
 
     private final AuthenticationProvider authenticationProvider;
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
-
+    @Value("${cors.allowOrigin}")
+    private String allowOrigin;
+//    logger.error("Unauthorized request: {}",authException.getMessage());
+//    "/api/v1/auth/register",
+//            "/api/v1/auth/login",
+//            "/api/v1/welcome",
+//            "/api/v1/imagekit/auth"
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        System.out.println("--------> Http security paths before :  " + httpSecurity);
         httpSecurity
-                .cors(cors-> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors-> {
+                    System.out.println("--------> Http security cors before :  " + cors);
+                    cors.configurationSource(corsConfigurationSource());
+                })
+                .csrf(AbstractHttpConfigurer::disable
+                )
                 .authorizeHttpRequests((requests) -> requests.requestMatchers
                                 (
                                         "/api/v1/auth/register",
                                         "/api/v1/auth/login",
                                         "/api/v1/welcome",
-                                        "/api/v1/imagekit/auth"
+                                        "/api/v1/imagekit/auth",
+                                        "/api/v1/posts/**",
+                                        "/api/v1/posts"
                                 ).permitAll()
                         .requestMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/worker/**").hasAuthority("WORKER")
@@ -51,18 +67,23 @@ public class SecurityConfiguration {
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                 .authenticationProvider(authenticationProvider)
+                .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling( (exception) -> exception
                         .authenticationEntryPoint(userAuthenticationEntryPoint));
+        System.out.println("--------> Http security paths before :  " + httpSecurity);
         return httpSecurity.build();
     }
-    String allowOrigin = System.getenv("CORS_ALLOWED_ORIGINS");
+
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList(allowOrigin.split(",")));// fontend host port id
+
+        String[] allowedOriginsArray = allowOrigin.split(",");
+        System.out.println("Allowed Origins: " + Arrays.toString(allowedOriginsArray));
+
+        config.setAllowedOrigins(Arrays.asList(allowedOriginsArray));// frontend host port id
 
         config.setAllowedMethods(List.of("POST", "PUT", "PATCH", "GET", "OPTIONS", "DELETE"));
         config.setAllowedHeaders(List.of("Authorization", "Accept", "X-Requested-With", "Content-Type"));
